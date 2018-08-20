@@ -1489,6 +1489,56 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 888780822}
+--- !u!1 &889220804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 889220806}
+  - component: {fileID: 889220805}
+  m_Layer: 0
+  m_Name: AppleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &889220805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 889220804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918254f700d0e20448a7a381d1f00c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GSM: {fileID: 898110903}
+  food: {fileID: 1400347103358170, guid: 51fbd0c3b4ef0af48847a18e946744b7, type: 2}
+  chanceToSpawnFood: 98
+  floatingHeight: 1
+  player: {fileID: 1402699238}
+  inFrontOfPlayer: 13
+  aboveTheGround: 10
+  ground:
+    serializedVersion: 2
+    m_Bits: 768
+--- !u!4 &889220806
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 889220804}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.6307485, y: -0.2186462, z: 0.1739199}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &898110901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2625,7 +2675,7 @@ MonoBehaviour:
   hitSize: {x: 3, y: 20}
   mask:
     serializedVersion: 2
-    m_Bits: 3840
+    m_Bits: 12032
 --- !u!50 &1596279019
 Rigidbody2D:
   serializedVersion: 4
