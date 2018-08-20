@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorSpawner : MonoBehaviour {
+    public GameStateManager GSM;
+    public Transform startPosition;
     public GameObject floorPrefab;
-    public GameObject underFloorPrefab;
-    public Transform preplacedUnderFloor;
+    public Transform floorParent;
     public Transform preplacedFloor;
     public Transform player;
     public float distanceBetweenEachFloorCell;
@@ -13,30 +14,77 @@ public class FloorSpawner : MonoBehaviour {
     public float maxHeight;
     public float minHeight;
 
-    private Vector3 lastTilePlace;
-    private Vector3 lastUnderfloorPlaced;
+    public int nmbrOfFloors;
+
+    private Vector3 lastFloorPlace;
+
+    private bool firstRestart = true;
 
 
 	// Use this for initialization
 	void Start () {
-        lastTilePlace = preplacedFloor.position;
-        lastUnderfloorPlaced = preplacedUnderFloor.position;
+        lastFloorPlace = preplacedFloor.position;
+
+        for(int i = 0; i < nmbrOfFloors; i++)
+        {
+            Vector3 moveTo = new Vector3(distanceBetweenEachFloorCell + lastFloorPlace.x, preplacedFloor.position.y, 0);
+            GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
+            floor.transform.parent = floorParent;
+            lastFloorPlace = moveTo;
+
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(Mathf.Abs(player.position.x - lastTilePlace.x) < distanceToLoadAhead)
+        if(GSM.gameState == GameState.GAMEPLAY)
         {
-            float randomDistance = Random.Range(minHeight, maxHeight);
-            Vector3 moveTo = new Vector3(distanceBetweenEachFloorCell + lastTilePlace.x, lastTilePlace.y + randomDistance, 0);
-            GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
-            floor.transform.parent = this.transform;
-            lastTilePlace = moveTo;
-
-            moveTo = new Vector3(distanceBetweenEachFloorCell + lastUnderfloorPlaced.x, lastUnderfloorPlaced.y + randomDistance, 2);
-            GameObject underFloor = Instantiate<GameObject>(underFloorPrefab, moveTo, Quaternion.identity);
-            underFloor.transform.parent = floor.transform;
-            lastUnderfloorPlaced = moveTo;
+            firstRestart = true;
+            GamePlay();
+        }
+        else if(GSM.gameState == GameState.GAME_OVER)
+        {
+            lastFloorPlace = startPosition.position;
+        }
+        else if(GSM.gameState == GameState.RESTART)
+        {
+            Restart();
         }
 	}
+
+    void GamePlay()
+    {
+        if (Mathf.Abs(player.position.x - lastFloorPlace.x) < distanceToLoadAhead)
+        {
+            float randomDistance = Random.Range(minHeight, maxHeight);
+            float lerpedDistance = Mathf.Lerp(lastFloorPlace.y, randomDistance, 0.1f);
+            Vector3 moveTo = new Vector3(distanceBetweenEachFloorCell + lastFloorPlace.x, lerpedDistance, 0);
+            GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
+            floor.transform.parent = floorParent;
+            lastFloorPlace = moveTo;
+        }
+    }
+
+    void Restart()
+    {
+        if (firstRestart)
+        {
+            firstRestart = false;
+            lastFloorPlace = startPosition.position;
+            foreach (Transform child in floorParent)
+            {
+                Destroy(child.gameObject);
+            }
+            lastFloorPlace = new Vector3(startPosition.position.x, -2, 0);
+            //while (Mathf.Abs(player.position.x - lastFloorPlace.x) < distanceToLoadAhead)
+            for (int i = 0; i < 11; i++)
+            {
+                Vector3 moveTo = lastFloorPlace + Vector3.right * distanceBetweenEachFloorCell;
+                GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
+                Debug.Log(floor.transform.position);
+                floor.transform.parent = floorParent;
+                lastFloorPlace = moveTo;
+            }
+        }
+    }
 }

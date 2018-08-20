@@ -15,8 +15,7 @@ public class DistanceCounter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		distanceFromStart = Mathf.Floor(Vector2.Distance(player.position, start.position));
+		distanceFromStart = Mathf.Floor(Vector2.Distance(player.position, start.position+Vector3.right*4));
         UIText.text = distanceFromStart.ToString();
-
     }
 }

@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 
     public float jumpHeight;
     public float jumpDistance;
+    private bool hasJumped = false;
     bool isGrounded;
     bool isGroundedForJump;
     bool isGroundedNow;
@@ -44,6 +45,8 @@ public class PlayerController : MonoBehaviour {
 
     public GameStateManager GSM;
     GameState currentState;
+
+    public Transform startPosition;
 
     public TextMesh isGroundedText;
 
@@ -85,6 +88,16 @@ public class PlayerController : MonoBehaviour {
         else if(currentState == GameState.GAME_OVER)
         {
             DeadState();
+        }
+        else if(currentState == GameState.RESTART)
+        {
+
+            this.transform.position = startPosition.position + Vector3.right * 16 + Vector3.up * 5;
+
+            RaycastHit2D onGround = Physics2D.Raycast(this.transform.position, Vector3.down, 30, ground);
+            this.transform.position += Vector3.down * (onGround.distance-0.5f);
+
+            //TODO: Add fall down to the pig to make it start on the floor
         }
     }
 
@@ -142,25 +155,26 @@ public class PlayerController : MonoBehaviour {
             Land();
         }
 
-        
 
 
-        if (Input.touchCount > 0 || Input.anyKey)
+        if (GetJumpInput(isGroundedForJump, hasJumped))
         {
-            //Both if are the same, one is just for tactile input and the other for keyboard
-            if ((Input.GetButton("Jump")) && isGroundedForJump)
-            {
-                Jump();
-            }
-            else if(Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Stationary && isGroundedForJump)
-            {
-                Jump();
-            }
+            Jump();
         }
-        else if ((Input.GetButtonUp("Jump")) && !isGroundedForJump)
+        else if (GetJumpInput(isGroundedForJump, hasJumped) && !isGroundedForJump)
         {
             velocity.y *= 0.5f;
             velocity.x *= 0.5f;
+            hasJumped = false;
+        }
+        
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && hasJumped)
+        {
+            hasJumped = false;
+        }
+        else if (!Input.GetButton("Jump") && hasJumped)
+        {
+            hasJumped = false;
         }
 
         velocity.x /= 1 + drag.x * Time.deltaTime;
@@ -228,6 +242,10 @@ public class PlayerController : MonoBehaviour {
         }
         //isGroundedText.text = velocity.ToString();
         animator.SetBool(jumpingHash, true);
+        if (forward)
+        {
+            hasJumped = true;
+        }
     }
 
     void Land()
@@ -245,5 +263,21 @@ public class PlayerController : MonoBehaviour {
         //{
         //    Debug.Log(Vector3.Distance(hits[0].point, groundChecker.transform.position));
         //}
+    }
+
+    bool GetJumpInput(bool isGrounded, bool hasJumped)
+    {
+        if((Input.GetButton("Jump") || (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Stationary)) && isGrounded && !hasJumped)
+        {
+            return true;
+        }
+        else if(!Input.GetButton("Jump") || (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended))
+        {
+            return false;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

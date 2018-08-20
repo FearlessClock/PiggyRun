@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4340830009083492}
   - component: {fileID: 61096639084777300}
-  m_Layer: 0
-  m_Name: BackgroundTree
+  m_Layer: 11
+  m_Name: ForegroundTree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4090426378637174}
   - component: {fileID: 212888048606316248}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ForegroundTreed
   m_TagString: Untagged
   m_Icon: {fileID: 0}

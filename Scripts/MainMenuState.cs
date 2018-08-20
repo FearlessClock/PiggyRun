@@ -22,11 +22,6 @@ public class MainMenuState : MonoBehaviour, State {
         screenManager.OpenPanel(gameplayUI);
     }
 
-    public void StartNewGame()
-    {
-        
-    }
-
     public void OnTransition()
     {
         throw new System.NotImplementedException();

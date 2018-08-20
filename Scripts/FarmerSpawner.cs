@@ -47,6 +47,10 @@ public class FarmerSpawner : MonoBehaviour {
         {
             GameOver();
         }
+        else if(currentGameState == GameState.RESTART)
+        {
+            Restart();
+        }
     }
 
     void Gameplay()
@@ -74,6 +78,14 @@ public class FarmerSpawner : MonoBehaviour {
     {
         lastSpawnPosition = startPosition.transform.position;
         //Clear all existing farmers
+    }
+
+    void Restart()
+    {
+        foreach (Transform child in this.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 
     private void OnDrawGizmos()

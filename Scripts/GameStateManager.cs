@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Game States
-public enum GameState { MAIN_MENU, GAMEPLAY, PAUSE, GAME_OVER }
+public enum GameState { MAIN_MENU, GAMEPLAY, PAUSE, GAME_OVER,
+    RESTART
+}
 
 public delegate void OnStateChangeHandler();
 

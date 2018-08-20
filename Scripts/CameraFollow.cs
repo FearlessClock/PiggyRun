@@ -31,6 +31,11 @@ public class CameraFollow : MonoBehaviour {
         {
             this.transform.position = GoToPoint;
         }
+        else if(GSM.gameState == GameState.RESTART)
+        {
+            GoToPoint = new Vector3(toFollow.transform.position.x + offset.x, toFollow.transform.position.y + offset.y, -10);
+            this.transform.position = Vector3.SmoothDamp(this.transform.position, toFollow.transform.position + offset, ref velocity, cameraMoveSpeedX);
+        }
 
     }
 }

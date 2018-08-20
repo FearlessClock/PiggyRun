@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class DestroyOffScreen : MonoBehaviour {
 
+    public GameStateManager GSM;
     public Transform hitPosition;
     public Vector2 hitSize;
     public LayerMask mask;
     private Collider2D[] hits;
     private void Start()
     {
-        hits = new Collider2D[500];
+        hits = new Collider2D[100];
     }
     private void Update()
     {
-        int nmbrOfHits = Physics2D.OverlapBoxNonAlloc(hitPosition.position, hitSize, 0, hits, mask);
-
-        if(nmbrOfHits > 0)
+        if(GSM.gameState == GameState.GAMEPLAY)
         {
-            for(int i = 0; i < nmbrOfHits; i++)
+            int nmbrOfHits = Physics2D.OverlapBoxNonAlloc(hitPosition.position, hitSize, 0, hits, mask);
+
+            if (nmbrOfHits > 0)
             {
-                Destroy(hits[i].gameObject);
+                for (int i = 0; i < nmbrOfHits; i++)
+                {
+                    Destroy(hits[i].gameObject);
+                }
             }
         }
     }
