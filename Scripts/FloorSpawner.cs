@@ -81,7 +81,6 @@ public class FloorSpawner : MonoBehaviour {
             {
                 Vector3 moveTo = lastFloorPlace + Vector3.right * distanceBetweenEachFloorCell;
                 GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
-                Debug.Log(floor.transform.position);
                 floor.transform.parent = floorParent;
                 lastFloorPlace = moveTo;
             }

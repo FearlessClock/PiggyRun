@@ -16,7 +16,6 @@ public class Farmer : MonoBehaviour {
         direction = catchPig.position - this.transform.position;
         distance = Vector3.Distance(catchPig.position, this.transform.position);
         animatorJumpParam = Animator.StringToHash("Jump");
-        Debug.Log(direction + " " + distance);
 
     }
 	
@@ -25,7 +24,6 @@ public class Farmer : MonoBehaviour {
         bool isPig = Physics2D.BoxCast(this.transform.position, new Vector2(5, 3), 0, direction, distance, pigLayer);
         if (isPig)
         {
-            Debug.Log("Found");
             farmerAnimator.SetBool(animatorJumpParam, true);
         }
 	}

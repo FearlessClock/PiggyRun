@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour {
             velocity.x *= 0.5f;
             hasJumped = false;
         }
-        
+
         if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && hasJumped)
         {
             hasJumped = false;
