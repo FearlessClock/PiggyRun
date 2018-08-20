@@ -15,6 +15,7 @@ public class AppleSpawner : MonoBehaviour {
     public float aboveTheGround;
     public LayerMask ground;
 
+    private bool firstRestart = true;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +26,7 @@ public class AppleSpawner : MonoBehaviour {
 	void Update () {
         if(GSM.gameState == GameState.GAMEPLAY)
         {
+            firstRestart = true;
             if (Random.Range(0, 100) > chanceToSpawnFood)
             {
                 Vector3 pos = player.position;
@@ -37,6 +39,17 @@ public class AppleSpawner : MonoBehaviour {
                 GameObject apple = Instantiate<GameObject>(food, pos, Quaternion.identity);
 
                 apple.transform.parent = this.transform;
+            }
+        }
+        else if (GSM.gameState == GameState.RESTART)
+        {
+            if (firstRestart)
+            {
+                foreach(Transform child in this.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+                firstRestart = false;
             }
         }
 	}

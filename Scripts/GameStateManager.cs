@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,13 @@ public class GameStateManager : MonoBehaviour {
     private static GameStateManager instance = null;
     public event OnStateChangeHandler OnStateChange;
     public GameState gameState { get; private set; }
+
+    private float amountOfCoinsThisRound;
+
+    internal void addToCoins(int amount)
+    {
+        amountOfCoinsThisRound += amount;
+    }
 
     public static GameStateManager Instance
     {
