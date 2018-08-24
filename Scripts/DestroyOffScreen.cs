@@ -15,7 +15,7 @@ public class DestroyOffScreen : MonoBehaviour {
     }
     private void Update()
     {
-        if(GSM.gameState == GameState.GAMEPLAY)
+        if(GSM.gameState == GameState.GAMEPLAY || GSM.gameState == GameState.STARTING)
         {
             int nmbrOfHits = Physics2D.OverlapBoxNonAlloc(hitPosition.position, hitSize, 0, hits, mask);
 

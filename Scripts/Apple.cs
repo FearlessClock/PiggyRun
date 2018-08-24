@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Apple : MonoBehaviour {
     private GameStateManager GSM;
+
     public LayerMask player;
 	// Use this for initialization
 	void Start () {

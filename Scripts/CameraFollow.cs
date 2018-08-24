@@ -10,6 +10,9 @@ public class CameraFollow : MonoBehaviour {
     public float cameraMoveSpeedX;
     public float cameraMoveSpeedY;
 
+    bool isRunning = false;
+    float timer = 0;
+
     public GameStateManager GSM;
 
 	// Use this for initialization
@@ -22,10 +25,7 @@ public class CameraFollow : MonoBehaviour {
 	void Update () {
         if(GSM.gameState == GameState.GAMEPLAY)
         {
-            GoToPoint = new Vector3(toFollow.transform.position.x + offset.x, toFollow.transform.position.y + offset.y, -10);
-            this.transform.position = Vector3.SmoothDamp(this.transform.position, toFollow.transform.position + offset, ref velocity, cameraMoveSpeedX);
-            //this.transform.position = new Vector3(Mathf.Lerp(this.transform.position.x, GoToPoint.x, Time.deltaTime * cameraMoveSpeedX),
-            //                                       Mathf.Lerp(this.transform.position.y, GoToPoint.y, Time.deltaTime * cameraMoveSpeedY), -10);
+            FollowPlayer();
         }
         else if (GSM.gameState == GameState.MAIN_MENU)
         {
@@ -33,9 +33,30 @@ public class CameraFollow : MonoBehaviour {
         }
         else if(GSM.gameState == GameState.RESTART)
         {
-            GoToPoint = new Vector3(toFollow.transform.position.x + offset.x, toFollow.transform.position.y + offset.y, -10);
-            this.transform.position = Vector3.SmoothDamp(this.transform.position, toFollow.transform.position + offset, ref velocity, cameraMoveSpeedX);
+            if (isRunning == false)
+            {
+                isRunning = true;
+                timer = 0;
+            }
+            timer += Time.deltaTime;
+            if (timer > 1)
+            {
+                GoToPoint = new Vector3(toFollow.transform.position.x + offset.x, toFollow.transform.position.y + offset.y, -10);
+                this.transform.position = Vector3.SmoothDamp(this.transform.position, toFollow.transform.position + offset, ref velocity, cameraMoveSpeedX / 20);
+            }
+        }
+        else if(GSM.gameState == GameState.STARTING)
+        {
+            isRunning = false;
+            timer = 0;
+            FollowPlayer();
         }
 
+    }
+
+    void FollowPlayer()
+    {
+        GoToPoint = new Vector3(toFollow.transform.position.x + offset.x, toFollow.transform.position.y + offset.y, -10);
+        this.transform.position = Vector3.SmoothDamp(this.transform.position, toFollow.transform.position + offset, ref velocity, cameraMoveSpeedX);
     }
 }

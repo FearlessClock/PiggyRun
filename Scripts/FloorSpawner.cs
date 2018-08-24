@@ -50,6 +50,10 @@ public class FloorSpawner : MonoBehaviour {
         {
             Restart();
         }
+        else if(GSM.gameState == GameState.STARTING)
+        {
+            Starting();
+        }
 	}
 
     void GamePlay()
@@ -59,6 +63,17 @@ public class FloorSpawner : MonoBehaviour {
             float randomDistance = Random.Range(minHeight, maxHeight);
             float lerpedDistance = Mathf.Lerp(lastFloorPlace.y, randomDistance, 0.1f);
             Vector3 moveTo = new Vector3(distanceBetweenEachFloorCell + lastFloorPlace.x, lerpedDistance, 0);
+            GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
+            floor.transform.parent = floorParent;
+            lastFloorPlace = moveTo;
+        }
+    }
+
+    void Starting()
+    {
+        if (Mathf.Abs(player.position.x - lastFloorPlace.x) < distanceToLoadAhead)
+        {
+            Vector3 moveTo = lastFloorPlace + Vector3.right * distanceBetweenEachFloorCell;
             GameObject floor = Instantiate<GameObject>(floorPrefab, moveTo, Quaternion.identity);
             floor.transform.parent = floorParent;
             lastFloorPlace = moveTo;

@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour {
     public float gravity;
     public Vector2 friction;
 
-    public Animator GameOverUI;
+    public Animator gameOverUI;
+    public Animator gameplayUI;
     public ScreenManager screenManager;
 
     Vector2 velocity;
@@ -50,6 +51,9 @@ public class PlayerController : MonoBehaviour {
 
     public TextMesh isGroundedText;
 
+    public AudioClip jumpAudio;
+    private AudioSource soundSystem;
+
 
     public GameState GetCurrentState()
     {
@@ -61,6 +65,8 @@ public class PlayerController : MonoBehaviour {
         animator = GetComponent<Animator>();
         jumpingHash = Animator.StringToHash("Jumping");
         runningHash = Animator.StringToHash("Running");
+        soundSystem = GetComponent<AudioSource>();
+        jumpAudio.LoadAudioData();
 
     }
 
@@ -91,19 +97,70 @@ public class PlayerController : MonoBehaviour {
         }
         else if(currentState == GameState.RESTART)
         {
-
+            velocity = Vector3.zero;
             this.transform.position = startPosition.position + Vector3.right * 16 + Vector3.up * 5;
 
             RaycastHit2D onGround = Physics2D.Raycast(this.transform.position, Vector3.down, 30, ground);
-            this.transform.position += Vector3.down * (onGround.distance-0.5f);
-
-            //TODO: Add fall down to the pig to make it start on the floor
+            this.transform.position += Vector3.down * (onGround.distance - 0.5f);
+        }
+        else if(currentState == GameState.STARTING)
+        {
+            StartingState();
         }
     }
 
     void DeadState()
     {
         //Be dead
+    }
+
+    void StartingState()
+    {
+        //Wait for action before starting
+        if (GetJumpInput(true, false))
+        {
+            //TODO: Start a count down till starting the game
+            screenManager.OpenPanel(gameplayUI);
+            GSM.SetGameState(GameState.GAMEPLAY);
+        }
+
+        Vector3 move = new Vector3(forwardMovementSpeed, 0, 0);
+
+        character.Move(move * Time.deltaTime * speed);
+
+        isGroundedNow = CheckIfGrounded();
+        isGroundedForJump = Physics2D.BoxCast(groundChecker.transform.position, checkSize, 0, Vector2.down, 0.05f, ground);
+        oldVelocity = velocity;
+        oldPosition = this.transform.position;
+        velocity.y += gravity * Time.deltaTime;
+
+        if (isGroundedNow && !isGrounded)
+        {
+            RaycastHit2D rayHit = Physics2D.Raycast(this.transform.position, Vector2.down, 10, ground);
+            if (rayHit)
+            {
+                this.transform.position += new Vector3(0, 0.5f - rayHit.distance, 0);
+            }
+        }
+
+
+        if (isGrounded)
+        {
+            RaycastHit2D rayHit = Physics2D.Raycast(this.transform.position, Vector2.down, 10, ground);
+            if (rayHit)
+            {
+                this.transform.position += new Vector3(0, (0.5f - rayHit.distance) * Time.deltaTime * riseOutOfTheGroundSpeed, 0);
+            }
+        }
+
+        isGrounded = isGroundedNow;
+
+        if (isGrounded && velocity.y < 0)
+        {
+            Land();
+        }
+
+        character.Move(velocity);
     }
 
     void AliveState()
@@ -120,7 +177,7 @@ public class PlayerController : MonoBehaviour {
             //Launch game over
             isAlive = false;
             GSM.SetGameState(GameState.GAME_OVER);
-            screenManager.OpenPanel(GameOverUI);
+            screenManager.OpenPanel(gameOverUI);
         }
 
         isGroundedNow = CheckIfGrounded();
@@ -155,8 +212,6 @@ public class PlayerController : MonoBehaviour {
             Land();
         }
 
-
-
         if (GetJumpInput(isGroundedForJump, hasJumped))
         {
             Jump();
@@ -168,11 +223,7 @@ public class PlayerController : MonoBehaviour {
             hasJumped = false;
         }
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended && hasJumped)
-        {
-            hasJumped = false;
-        }
-        else if (!Input.GetButton("Jump") && hasJumped)
+        if (((Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended) || (Input.touchCount == 0 && !Input.GetButton("Jump"))) && hasJumped)
         {
             hasJumped = false;
         }
@@ -246,6 +297,11 @@ public class PlayerController : MonoBehaviour {
         {
             hasJumped = true;
         }
+
+        if (jumpAudio.loadState == AudioDataLoadState.Loaded)
+        {
+            soundSystem.PlayOneShot(jumpAudio);
+        }
     }
 
     void Land()
@@ -256,8 +312,8 @@ public class PlayerController : MonoBehaviour {
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(this.transform.position, Vector3.down);
-        Gizmos.DrawWireCube(groundChecker.transform.position, checkSize);
+        //Gizmos.DrawRay(this.transform.position, Vector3.down);
+        //Gizmos.DrawWireCube(groundChecker.transform.position, checkSize);
         //RaycastHit2D[] hits = Physics2D.RaycastAll(groundChecker.transform.position, Vector2.down, groundDistance, ground);
         //if(hits.Length > 0)
         //{

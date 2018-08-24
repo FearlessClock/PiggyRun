@@ -18,8 +18,8 @@ public class MainMenuState : MonoBehaviour, State {
     
     public void StartGame()
     {
-        GSM.SetGameState(GameState.GAMEPLAY);
-        screenManager.OpenPanel(gameplayUI);
+        GSM.SetGameState(GameState.STARTING);
+        screenManager.CloseCurrent();
     }
 
     public void OnTransition()

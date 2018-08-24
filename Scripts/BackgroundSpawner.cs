@@ -80,6 +80,10 @@ public class BackgroundSpawner : MonoBehaviour {
 
             }
         }
+        else if(GSM.gameState == GameState.STARTING)
+        {
+            GamePlay();
+        }
 	    
     }
 

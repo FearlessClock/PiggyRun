@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Game States
 public enum GameState { MAIN_MENU, GAMEPLAY, PAUSE, GAME_OVER,
-    RESTART
+    RESTART, STARTING
 }
 
 public delegate void OnStateChangeHandler();
@@ -15,17 +15,32 @@ public class GameStateManager : MonoBehaviour {
     public Animator GameOverUI;
     public Animator GamePlayUI;
     public Animator MainMenuUI;
-
+    public CoinStorage coinStorage;
     protected GameStateManager() { }
     private static GameStateManager instance = null;
     public event OnStateChangeHandler OnStateChange;
     public GameState gameState { get; private set; }
 
-    private float amountOfCoinsThisRound;
-
     internal void addToCoins(int amount)
     {
-        amountOfCoinsThisRound += amount;
+        coinStorage.addToCoins(amount);
+    }
+
+    public void PauseGame()
+    {
+        if(gameState == GameState.PAUSE)
+        {
+            gameState = GameState.GAMEPLAY;
+        }
+        else if(gameState == GameState.GAMEPLAY)
+        {
+            gameState = GameState.PAUSE;
+        }
+        else if(gameState == GameState.MAIN_MENU)
+        {
+            //Open settings menu
+        }
+
     }
 
     public static GameStateManager Instance

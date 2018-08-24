@@ -51,8 +51,15 @@ public class FarmerSpawner : MonoBehaviour {
         {
             Restart();
         }
+        else if(currentGameState == GameState.STARTING)
+        {
+            Starting();
+        }
     }
-
+    void Starting()
+    {
+        lastSpawnPosition = new Vector3(player.transform.position.x + (minDistance + 10), lastSpawnPosition.y, 0);
+    }
     void Gameplay()
     {
         if(lastSpawnPosition.x - player.transform.position.x < minDistance)
@@ -90,7 +97,7 @@ public class FarmerSpawner : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(lastSpawnPosition, Vector3.one);
-        Gizmos.DrawRay(lastSpawnPosition, Vector3.down);
+        //Gizmos.DrawWireCube(lastSpawnPosition, Vector3.one);
+        //Gizmos.DrawRay(lastSpawnPosition, Vector3.down);
     }
 }
