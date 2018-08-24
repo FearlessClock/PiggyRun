@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CoinStorage : MonoBehaviour
 {
-    public string coinsKey = "coins";
+    public string coinsKey = IDStorage.COIN_STORAGE;
     public GameStateManager GSM;
     public Text coinsShow;
 

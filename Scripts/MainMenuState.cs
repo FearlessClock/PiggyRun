@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuState : MonoBehaviour, State {
+public class MainMenuState : MonoBehaviour {
     public GameStateManager GSM;
     public ScreenManager screenManager;
     public Animator gameplayUI;
+    public Animator mainMenuUI;
+    public Animator shoppeUI;
     
     // Use this for initialization
     void Awake () {
@@ -22,18 +24,15 @@ public class MainMenuState : MonoBehaviour, State {
         screenManager.CloseCurrent();
     }
 
-    public void OnTransition()
+    public void OpenShoppe()
     {
-        throw new System.NotImplementedException();
+        GSM.SetGameState(GameState.SHOPPE);
+        screenManager.OpenPanel(shoppeUI);
     }
 
-    public void StateUpdate()
+    public void OpenMainMenu()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void HandleStateChange()
-    {
-        Debug.Log("MainMenuScreen");
+        GSM.SetGameState(GameState.MAIN_MENU);
+        screenManager.OpenPanel(mainMenuUI);
     }
 }

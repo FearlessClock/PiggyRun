@@ -31,6 +31,10 @@ public class CameraFollow : MonoBehaviour {
         {
             this.transform.position = GoToPoint;
         }
+        else if(GSM.gameState == GameState.SHOPPE)
+        {
+            this.transform.position = GoToPoint + Vector3.right * 3;
+        }
         else if(GSM.gameState == GameState.RESTART)
         {
             if (isRunning == false)

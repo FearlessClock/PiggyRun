@@ -5,7 +5,8 @@ using UnityEngine;
 
 // Game States
 public enum GameState { MAIN_MENU, GAMEPLAY, PAUSE, GAME_OVER,
-    RESTART, STARTING
+    RESTART, STARTING,
+    SHOPPE
 }
 
 public delegate void OnStateChangeHandler();

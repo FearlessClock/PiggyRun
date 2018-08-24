@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour {
     public AudioSource backgroundMusic;
 	// Use this for initialization
 	void Start () {
-        audioOnState = PlayerPrefs.GetInt("AudioOnState", 0) == 0 ? false : true;
+        audioOnState = PlayerPrefs.GetInt(IDStorage.AUDIO_STATE, 0) == 0 ? false : true;
 
         SetAudioButtonSprite();
 

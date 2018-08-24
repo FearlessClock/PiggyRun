@@ -87,6 +87,10 @@ public class PlayerController : MonoBehaviour {
         {
             AliveState();
         }
+        else if(currentState == GameState.SHOPPE)
+        {
+            MenuState();
+        }
         else if(currentState == GameState.MAIN_MENU)
         {
             MenuState();

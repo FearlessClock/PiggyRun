@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 222337656116127226}
   - component: {fileID: 114106062822181642}
   m_Layer: 0
-  m_Name: Image
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 222774157058021268}
   - component: {fileID: 114783323137429682}
   m_Layer: 0
-  m_Name: Image
+  m_Name: SkinIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114421279481325224
@@ -314,7 +314,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinStorage: {fileID: 0}
+  skinName: 
+  ID: 0
   itemPrice: 10
+  shopManager: {fileID: 0}
 --- !u!114 &114550188038624248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -361,7 +364,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8161f660c6731cc4eb6f1d7b7bddb301, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
